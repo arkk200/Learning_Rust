@@ -1,14 +1,20 @@
-// 함수에서 반환하고자 하는 타입은 '함수명() -> 타입 {}' 형식으로 쓰고
-// return할 표현식은 return을 써도 되지만 암묵적으로 마지막 표현식을 반환한다.
-fn give_age() -> i32 {
-    42
-}
-// !(macro) = 코드를 쓰는 함수
 fn main() {
-    println!("ASDF");
-    // 매크로는 아래처럼 써야할 복잡한 코드를 자동을 써주는 함수이다.
-    // { ::std::io::_print(::core::fmt::Arguments::new_v1(&["ASDF\n"], &[])); };
-    let my_name = "LMJ";
-    // let my_age = 42;
-    println!("My name is {} and my age is {}", my_name, give_age());
+    let my_city = "Busan";
+    let year = 2022;
+    let population = 3429000;
+    println!("The city of {} in {} had a population of {}", my_city, year, population);
+    /*
+    println!("The city of {my_city} in {year} had a population of {population}", my_city, year, population);
+    현재 버전(1.62.1)에선 괄호 안에 '"{변수명}", 변수명' 형식으론 쓸 수 없다.
+    대신 '"{이름}", 이름 = 변수명' 형식으로 대체할 수 있다.
+     */
+    // "{이름}", 이름 = 변수명
+    println!("The city of {city} in {year} had a population of {population}",
+        city = my_city,
+        year = year,
+        population = population
+    );
+    /* '"{이름}", 이름 = 변수명' 형식 외에 {} 안에 숫자를 넣어 변수 값을 가지고 올 수 있다. 0부터 순서대로 시작한다.*/
+    println!("The city of {0} in {1} had a population of {2}, I live in {0}", my_city, year, population);
+    // 이런걸 문자열 보간(string interpolation)이라고 한다.
 }
