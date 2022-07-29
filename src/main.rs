@@ -1,24 +1,13 @@
-fn number() -> i32 {
-    10 // ; // 세미콜론을 쓰면 () (empty tuple)이 나온다.
+// 매개변수는 '매개변수: 타입' 형식으로 타입을 정해주어야 한다.
+fn give_number(one: i16, two: i16) -> i16 {
+    let multipleied_by_ten = { // 블럭만 만들어도 함수같이 만들 수 있다.
+        let first_number = 10;
+        first_number * one * two
+    };
+    multipleied_by_ten
 }
 
-// () - 빈 튜플 (empty tuple), unit type (void)
-
-fn empty_tuple1() -> (){} // 직접적으로 튜플을 반환하거나
-fn empty_tuple2(){
-    // return 값이 없거나
-}
-fn empty_tuple3(){
-    1; // 세미콜론을 쓰면 empty tuple이 나온다.
-}
-
-// Display {}
-// Debug {:?}
-fn main() { // main() 함수도 return 값이 없으니 empty tuple을 반환한다고 할 수 있다.
-    let _x = number();
-    println!("{}", _x);
-    let _tuple1 = empty_tuple1();
-    let _tuple2 = empty_tuple2();
-    let _tuple3 = empty_tuple3();
-    println!("{:?}", _tuple1); // 튜플은 디버그로 출력해야한다.
+fn main() {
+    let my_number = give_number(7, 8);
+    println!("{}", my_number);
 }
