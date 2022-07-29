@@ -1,11 +1,14 @@
+// 함수에서 반환하고자 하는 타입은 '함수명() -> 타입 {}' 형식으로 쓰고
+// return할 표현식은 return을 써도 되지만 암묵적으로 마지막 표현식을 반환한다.
+fn give_age() -> i32 {
+    42
+}
+// !(macro) = 코드를 쓰는 함수
 fn main() {
-    let _my_number = 9u16; // 숫자 뒤에 타입을 추가하여 정할& 수 있다.
-    let _prettry_my_number = 9_u8;
-    let _other_number = 1_000_000_000_000u64; // 언더바는 키워드 빼고는 다 무시한다.
-     // 정수에서 default타입은 i32였다면실수에서 default타입은 f64이다. 8바이트
-    let _my_float_number_with_dot = 9.; // f64, .만 찍어도 컴파일러가 실수로 판단한다
-    let _my_float_number = 9.999; // f64, .만 찍어도 컴파일러가 실수로 판단한다
-    let _my_int_number = 9; // i32
-    println!("{}", _my_float_number as i32 + _my_int_number); // 실수를 정수로 변환하면 소수점이 사라진다.
-    println!("{}", _my_int_number as f64); // 정수를 실수로 변환해도 아무 문제 없다.
+    println!("ASDF");
+    // 매크로는 아래처럼 써야할 복잡한 코드를 자동을 써주는 함수이다.
+    // { ::std::io::_print(::core::fmt::Arguments::new_v1(&["ASDF\n"], &[])); };
+    let my_name = "LMJ";
+    // let my_age = 42;
+    println!("My name is {} and my age is {}", my_name, give_age());
 }
