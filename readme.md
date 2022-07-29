@@ -1,0 +1,1 @@
+(https://www.youtube.com/user/mithradates 의 Easy Rust Korean을 보고 학습을 하고 있습니다.)
