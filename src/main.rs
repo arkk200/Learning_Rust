@@ -1,20 +1,24 @@
-fn main() {
-    let my_city = "Busan";
-    let year = 2022;
-    let population = 3429000;
-    println!("The city of {} in {} had a population of {}", my_city, year, population);
-    /*
-    println!("The city of {my_city} in {year} had a population of {population}", my_city, year, population);
-    현재 버전(1.62.1)에선 괄호 안에 '"{변수명}", 변수명' 형식으론 쓸 수 없다.
-    대신 '"{이름}", 이름 = 변수명' 형식으로 대체할 수 있다.
-     */
-    // "{이름}", 이름 = 변수명
-    println!("The city of {city} in {year} had a population of {population}",
-        city = my_city,
-        year = year,
-        population = population
-    );
-    /* '"{이름}", 이름 = 변수명' 형식 외에 {} 안에 숫자를 넣어 변수 값을 가지고 올 수 있다. 0부터 순서대로 시작한다.*/
-    println!("The city of {0} in {1} had a population of {2}, I live in {0}", my_city, year, population);
-    // 이런걸 문자열 보간(string interpolation)이라고 한다.
+fn number() -> i32 {
+    10 // ; // 세미콜론을 쓰면 () (empty tuple)이 나온다.
+}
+
+// () - 빈 튜플 (empty tuple), unit type (void)
+
+fn empty_tuple1() -> (){} // 직접적으로 튜플을 반환하거나
+fn empty_tuple2(){
+    // return 값이 없거나
+}
+fn empty_tuple3(){
+    1; // 세미콜론을 쓰면 empty tuple이 나온다.
+}
+
+// Display {}
+// Debug {:?}
+fn main() { // main() 함수도 return 값이 없으니 empty tuple을 반환한다고 할 수 있다.
+    let _x = number();
+    println!("{}", _x);
+    let _tuple1 = empty_tuple1();
+    let _tuple2 = empty_tuple2();
+    let _tuple3 = empty_tuple3();
+    println!("{:?}", _tuple1); // 튜플은 디버그로 출력해야한다.
 }
