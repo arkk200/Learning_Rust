@@ -1,30 +1,19 @@
+// 러스트도 전역변수, 지역변수가 있다.
+// let은 전역변수로 쓸 수 없는 모양이다.
+// const
+const _NUMBER: i32 = 20; // const는 컴파일러가 알아서 타입을 맞추지 않기에 타입을 무조건 써야 한다. 또한 const는 다 대문자로 써주어야 한다.
+// static
+// static도 마찬가지로 타입을 써줘야 하며, 전부 대문자로 써줘야 한다.
+static mut _LOW_SCORE: i32 = 0;
+// static보단 const를 많이 쓴다.
+static mut _CAN_MUTABLE: i32 = 0; // const와 다르게 static은 mut를 같이 쓸 수 있다.
+// 하지만 안전하지 않기에 안 쓰는 것을 권장한다. --(1), 웬만하면 rust에서 unsafe를 안쓰는게 좋다.
+
+fn print_high_score() {
+    println!("The high score is {}", _NUMBER);
+}
 fn main() {
-    /* String은 재할당(reallocation)을 한다,
-    예를 들어 16바이트를 할당했는데 데이터가 그 크기보다 넘어서면
-    재할당하여 바이트 크기를 두 배로 늘린다.
-    (추측)
-    바이트 크기가 두 배로 느는건 .push()나 .push_str() 함수가 호출된 후
-    문자열의 크기가 기존 크기를 넘어설 때 늘어난다.
-    값이 존재할 때 최소 값은 8바이트이다.
-     */
-    // method = .function // .을 통해서 호출할 수 있는 함수가 메서드이다.
-    /* String methods 종류
-    .capacity()
-    .push()
-    .push_str()
-    .pop()
-    */
-    let mut _my_name = "".to_string();
-    // .len() 값은 .capacity() 값을 초과할 수 없다.
-    // 할당할 바이트 크기를 알면 처음부터 24바이트를 할당하면 재할당이 없다.
-    // let mut _my_name = String::with_capacity(24);
-    println!("Length is {} Capacity is: {}", _my_name.len(), _my_name.capacity()); // 
-    _my_name.push_str("lmj");
-    _my_name.push('!'); // 문자 추가
-    println!("Length is {} Capacity is: {}", _my_name.len(), _my_name.capacity()); // lmj!
-    _my_name.push_str(" and "); // 문자열 추가
-    _my_name.push_str("I live in Seoul!!!!!!!");
-    // _my_name.push('2'); // 두 배로 늘어남
-    println!("Length is {} Capacity is: {}", _my_name.len(), _my_name.capacity()); // lmj! and I ...
-    println!("My na is {}", _my_name);
+    let _x = 8; // 'let' binding: i32, let은 컴파일러가 알아서 타입을 맞추기에 타입을 쓸 필요가 없다.
+    print_high_score();
+    let _y = unsafe {_CAN_MUTABLE}; // (1)-- 그렇기에 만약 쓰게 된다면 unsafe{} 안에 변수를 넣어주어야 한다.
 }
