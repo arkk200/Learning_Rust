@@ -1,33 +1,32 @@
-// OWNERSHIP
-/* (1)-- move semantics 
-    함수에서 인자를 받을 때 참조로 받은게 아니기에
-    값에 대한 소유권을 가져간다. (변수 country는 값의 소유권을 뺏기게 됨)
-    따라서 print_country() 함수에 한 번 더 country를 인자로 전달하면
-    값이 이동됐다는 에러가 발생한다.
-*/
-
-fn print_country(country_name: String) {
-    println!("My country is {}", country_name);
-}
-fn print_country_with_return(country_name: String) -> String{
-    println!("My another country is {}", country_name);
-    country_name // 이런식으로 값을 다시 반환해 줄 순 있으나 참조를 쓰는게 더 낫다
+fn add_is_great(country_name: &mut String) {
+    country_name.push_str(" is great");
+    println!("Now it says: {}", country_name);
 }
 
-fn print_country_with_reference(country_name: &String){
-    println!("My third country is {}", country_name);
+// (1)-- immutable 변수를 인자로 받았는데 가능한 이유는
+// 값으로 받있기에 값에 대한 소유권을 mut country name가 뺏게 되고
+// 그렇기 때문에 바꿀 수 있게 된다.
+fn add_is_great_with_mut(mut country_name: String){
+    country_name.push_str(" is great");
+    println!("Now it says: {}", country_name);
+}
+
+fn add_is_great_with_mut_and_return(mut country_name: String) -> String {
+    country_name.push_str(" is great");
+    println!("Now it says: {}", country_name);
+    country_name
 }
 
 fn main() {
-    let country = "my country".to_string();
-    print_country(country); // --(1)
-    // print_country(country); // 에러가 발생함
-    let mut another_country = "another country".to_string();
-    // 값은 다시 돌려 받음
-    another_country = print_country_with_return(another_country);
-    println!("{}", another_country);
-    let third_country = "third country".to_string();
-    print_country_with_reference(&third_country);
-    print_country_with_reference(&third_country);
-    print_country_with_reference(&third_country);
+    let mut my_country = "country".to_string();
+    add_is_great(&mut my_country);
+    add_is_great(&mut my_country);
+
+    let my_second_country = "seconde country".to_string();
+    add_is_great_with_mut(my_second_country); // --(1)
+    // println!("{}", my_second_country); // 값을 빼앗겼기에 에러가 뜸
+    let mut my_third_country = "third country".to_string();
+    // return을 이용해서 값을 다시 받음
+    my_third_country = add_is_great_with_mut_and_return(my_third_country);
+    println!("{}", my_third_country);
 }
