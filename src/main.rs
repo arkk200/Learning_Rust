@@ -1,32 +1,25 @@
-fn add_is_great(country_name: &mut String) {
-    country_name.push_str(" is great");
-    println!("Now it says: {}", country_name);
+// copy types
+// copy 타입은 값을 복사하기만 하기에 값에 대한 소유권을 빼앗지 않는다.
+// copy 타입을 많이 만들고 복사를 한다고 해도 메모리 양이 줄거나 하진 않는다.
+fn prints_number(number: i32){
+    println!("{}", number);
 }
 
-// (1)-- immutable 변수를 인자로 받았는데 가능한 이유는
-// 값으로 받있기에 값에 대한 소유권을 mut country name가 뺏게 되고
-// 그렇기 때문에 바꿀 수 있게 된다.
-fn add_is_great_with_mut(mut country_name: String){
-    country_name.push_str(" is great");
-    println!("Now it says: {}", country_name);
-}
-
-fn add_is_great_with_mut_and_return(mut country_name: String) -> String {
-    country_name.push_str(" is great");
-    println!("Now it says: {}", country_name);
-    country_name
+// String은 copy 타입이 아니다
+// copy 타입 - 하나의 값을 변수들이 봐라봄
+// clone 타입 - 값을 새로 메모리에 할당함
+// clone도 마찬가지로 copy처럼 소유권을 빼앗기지 않는다.
+// 그러나 값을 대하는 방식에 차이가 있다.
+fn prints_string(input: String) {
+    println!("{}", input);
 }
 
 fn main() {
-    let mut my_country = "country".to_string();
-    add_is_great(&mut my_country);
-    add_is_great(&mut my_country);
+    let my_number = 8;
+    prints_number(my_number);
+    prints_number(my_number);
 
-    let my_second_country = "seconde country".to_string();
-    add_is_great_with_mut(my_second_country); // --(1)
-    // println!("{}", my_second_country); // 값을 빼앗겼기에 에러가 뜸
-    let mut my_third_country = "third country".to_string();
-    // return을 이용해서 값을 다시 받음
-    my_third_country = add_is_great_with_mut_and_return(my_third_country);
-    println!("{}", my_third_country);
+    let my_country = "Korea".to_string();
+    prints_string(my_country.clone());
+    prints_string(my_country);
 }
