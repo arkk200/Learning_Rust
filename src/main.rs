@@ -1,30 +1,29 @@
 fn main() {
-    let my_number = 5;
-    let my_second_number = 10;
+    let sky = "cloudy";
+    let temperature = "warm";
 
-    // 중괄호를 쓰면 에러가 안나지만 컴파일러가 필요없다고 경고한다.
-    if /*(*/my_number == 5/*)*/ && my_second_number == 10{
-        println!("They both match");
-    
-    // 다른 언어와 마찬가지로 &&: and, ||: or을 지원한다.
-    } else if my_number == 6 {
-        println!("It's six");
+    // 변수 여러개를 튜플로 감싸주면 여러개를 비교할 수 있다.
+    match (sky, temperature) {
 
-    } else { // 7과 6이 아니니 It's a different number이 출력된다.
-        println!("It's a different number");
+        // match는 여러 조건 중 하나만 실행한다.
+
+        // 밑에 조건이 있는데도 _를 먼저 쓰면 잘못 쓴거라고 컴파일러가 경고한다.
+        // 튜플 안에 요소도 마찬가지로 _를 보고 경고를 한다.
+        // _ => println!("Not sure what the weather is..."), // _ 는 마지막에 씀
+        // ("cloudy", _) => println!("Cloudy and something else"), 
+        ("cloudy", "cold") => println!("It's not very nice today"),
+        ("clear", "warm") => println!("It's a nice day"),
+        ("cloudy", _) => println!("Cloudy and something else"),
+        _ => println!("Not sure what the weather is..."),
     }
 
-    // match
-    let my_number = 5;
+    let children = 5;
+    let married = true;
 
-    // 다른 언어에서는 비슷한 switch가 있는데 match가 더 좋음
-    // rust가 expression-based language인 만큼 match앞에 변수선언이 가능함
-    let second_number = match my_number {
-        0 => 23,
-        1 => 56,
-
-        // 모든 가능성을 다 적어주어야 안전하기에 _를 쓴다.
-        _ => 17 // _는 i don't care || anything else 라는 뜻
-    };
-    println!("The second number is: {}", second_number);
+    match (children, married)  {
+        // 패턴은 match옆에 괄호에서 정해졌으므로 튜플안에있는 변수명는 꼭 변수 이름과 같게 쓸 필요가 없다.
+        (children, married) if !married => println!("Not married with {} children", children),
+        (c, m) if c == 0 && m => println!("Married but with no children"),
+        _ => println!("Some other type of marriage and children combination")
+    }
 }
