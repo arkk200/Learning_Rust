@@ -1,50 +1,61 @@
-// use: 함수 같은걸 줄여줌
+use core::num;
 
-enum Mood {
-    Happy,
-    Sleepy,
-    NotBad,
-    Angry
+enum Star {
+    // 컴파일러가 보는 숫자대신 다른 숫자를 넣어 바꿀 수 있다.
+    BrownDwarf = 10,
+    RedDwarf = 50,
+    YellowStar = 100,
+    RedGiant = 1000,
+    DeadStar // 전 값에 값을 대입해주었다면 값을 대입 안 한 이 값은 전 값에 +1 한 값이 된다.
 }
 
-fn match_mood(mood: &Mood) -> i32 {
-    use Mood::*; // Mood::*;을 쓰면
-    // Mood::Happy, Mood::Sleepy... 앞에 'Mood::'를 제거할 수 있음
+// --------------------
 
-    // match앞에 변수넣고 그 변수를 굳이 반환할 필요없이
-    // match에서 return되는 값을 바로 return할 수 있다.
-    match mood {
-        Happy => 10,
-        Sleepy => 6,
-        NotBad => 7,
-        Angry => 2
+enum Number {
+    // enum은 데이터 타입을 가짐, 안에 속성들도 대문자부터 시작해야함
+    U32(u32),
+    I32(i32)
+}
+
+fn get_number(input: i32) -> Number {
+    match input.is_positive() {
+        true => Number::U32(input as u32),
+        false => Number::I32(input)
     }
 }
 
-// -----------
-
-enum Season {
-    // enum은 컴파일러가 볼 때 숫자가 있다.
-    Spring, // 0
-    Summer, // 1
-    Autumn, // 2
-    Winter, // 3
-}
-
 fn main() {
-    let my_mood = Mood::NotBad;
-    let happiness_level = match_mood(&my_mood);
-    println!("Out of 1 to 10, my happiness is {}", happiness_level);
+    use Star::*;
 
-    // -----------
-    use Season::*;
+    // Vec<Star>
+    let stars = vec![BrownDwarf, RedDwarf, YellowStar, RedGiant, DeadStar];
 
-    // Vec<Season> 타입
-    let four_seasons = vec![Spring, Summer, Autumn, Winter];
+    for star in stars {
+        match star as u32 {
+            size if size <= 80 => println!("Not the biggest star"),
+            size if size > 80 => println!("Pretty big star: {}", size),
 
-    for season in four_seasons {
+            // 원래 위의 코드만 써줘도 문제가 없는데 아직 구현이 안된 것으로 보임
+            // 따라서 _를 써줘서 에러를 없애줌
+            _ => println!("Some other star")
+        }
+    }
+    
+    println!("What about DeadStar? Is is: {}", DeadStar as u32); // 1001
 
-        // as 정수로 하면 컴파일러가 인식하는 숫자가 출력된다.
-        println!("The number is: {}", season as u32);
+    // --------------------
+    println!("");
+
+    // Vec<Number>
+    // get_number(값)을 호출하고
+    // 양수면 Number::U32, 그렇지 않다면 Number:I32를 반환받는다.
+    // 받은 값을 토대로 Vec을 만든다.
+    let my_vec = vec![get_number(-800), get_number(8), get_number(-600)];
+
+    for item in my_vec { // 만든 Vec를 for문을 이용해서 하나씩 돌림
+        match item { // Number::U32(u32)이면 첫번째 코드를, Number::I32(i32)이면 두번째 코드를 실행한다.
+            Number::U32(number) => println!("It's a u32 with the value: {}", number),
+            Number::I32(number) => println!("It's a i32 with the value: {}", number)
+        };
     }
 }
