@@ -1,45 +1,34 @@
-use std::mem::size_of_val;
+// struct = and
+// enum = or (선택)
 
-// 원래 크기는 1+1+1+4로 7바이트여야 하는데
-// alignment가 자동으로 8바이트로 맞춰줌
-struct Numbers {
-    one: u8,
-    two: u8,
-    three: u8,
-    four: u32
+// enum은 enumeration을 줄인말이다.
+// e = from, number
+
+enum ThingsInTheSky { // enum도 struct처럼 대문자로 시작한다.
+    Sun,
+    Starts,
 }
 
-#[derive(Debug)]
-struct Country {
-    population: u32,
-    capital: String,
-    leader_name: String,
-    
-    // 갑자기 말도 안되게 큰 크기의 요소가 있으면
-    // 이걸 다른 struct에 옮겨서 따로 쓰는게 좋다
-    all_populations: [u32; 5500]
+fn create_skystate(time: i32) -> ThingsInTheSky {
+    match time {
+        // enum의 요소 접근은 'ENUM::요소' 형식으로 쓰면 된다.
+        6..=18 => ThingsInTheSky::Sun,
+        _ => ThingsInTheSky::Starts
+    }
+}
+
+fn check_skystate(state: &ThingsInTheSky) {
+    match state {
+        ThingsInTheSky::Sun => println!("I can see the sun"),
+        ThingsInTheSky::Starts => println!("I can see the starts")
+    }
 }
 
 fn main() {
-    let population = 35_000_000;
-    let capital = "Ottawa".to_string();
-    let leader_name = "Justing Trudeau".to_string();
+    let time = 20;
+    let sky_state = create_skystate(time);
+    check_skystate(&sky_state);
 
-    let my_country = Country {
-        // 속성명과 속성 값을 주는 변수 이름이 같을 경우
-        // 이런식으로 세미콜론과 변수이름을 생략할 수 있다.
-        population,
-        capital,
-        leader_name,
-        all_populations: [500; 5500]
-    };
-    println!("Country is {} bytes in size", size_of_val(&my_country));
-
-    let numbers = Numbers {
-        one: 8,
-        two: 19,
-        three: 20,
-        four: 30
-    };
-    println!("Size is: {}", size_of_val(&numbers));
+    // 한 번에 한 줄로 줄임
+    check_skystate(&create_skystate(8));
 }
