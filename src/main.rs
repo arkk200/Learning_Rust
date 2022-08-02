@@ -1,45 +1,45 @@
-// 러스트에는 struct가 3가지가 있다.
-// unit struct - 아무것도 없는, 이름만 있는 struct
-// unit struct는 바이트 크기가 0이다.
-struct FileDirectory; // struct의 앞 글자는 무조건 대문자이다.
+use std::mem::size_of_val;
 
-fn take_file_directory(_input: FileDirectory) { // 아무것도 없어도 쓸 수 있다.
-    println!("I got a file directory");
+// 원래 크기는 1+1+1+4로 7바이트여야 하는데
+// alignment가 자동으로 8바이트로 맞춰줌
+struct Numbers {
+    one: u8,
+    two: u8,
+    three: u8,
+    four: u32
 }
 
-// tuple struct
-// #[derive(Debug)]
-struct Colour (u8, u8, u8);
-
-// name struct
 #[derive(Debug)]
 struct Country {
     population: u32,
     capital: String,
-    leader_name: String
+    leader_name: String,
+    
+    // 갑자기 말도 안되게 큰 크기의 요소가 있으면
+    // 이걸 다른 struct에 옮겨서 따로 쓰는게 좋다
+    all_populations: [u32; 5500]
 }
 
 fn main() {
-    // unit struct (거의 안 씀)
-    let x = FileDirectory;
-    println!("The size is {}", std::mem::size_of_val(&x));
-    take_file_directory(x);
+    let population = 35_000_000;
+    let capital = "Ottawa".to_string();
+    let leader_name = "Justing Trudeau".to_string();
 
-    println!("");
-
-    // tuple struct
-    let my_colour = Colour(20, 50, 100);
-    println!("The second colour is {}", my_colour.1); // 튜플은 프로퍼티를 이용해서 요소를 가져옴
-    // println!("The second colour is {:?}", my_colour);
-
-    println!("");
-
-    // name struct
-    let canada = Country {
-        population: 35_000_000,
-        capital: "Ottawa".to_string(),
-        leader_name: "Justin Trudeau".to_string()
+    let my_country = Country {
+        // 속성명과 속성 값을 주는 변수 이름이 같을 경우
+        // 이런식으로 세미콜론과 변수이름을 생략할 수 있다.
+        population,
+        capital,
+        leader_name,
+        all_populations: [500; 5500]
     };
-    println!("The population is: {}\nThe capital is: {}\nLeader name is: {}", canada.population, canada.capital, canada.leader_name);
-    println!("The country is: {:#?}", canada); // Debug print에 #을 사이에 넣으면 깔끔하게 출력됨
+    println!("Country is {} bytes in size", size_of_val(&my_country));
+
+    let numbers = Numbers {
+        one: 8,
+        two: 19,
+        three: 20,
+        four: 30
+    };
+    println!("Size is: {}", size_of_val(&numbers));
 }
