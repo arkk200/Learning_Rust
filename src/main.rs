@@ -1,31 +1,30 @@
-fn main() /*-> ()*/ { // main함수에선 안보이는 튜플을 반환하고 있다.
-    let my_tuple = (8, "lmj", vec![1, 2, 3]); // tuple은 소괄호만 써서 만들 수 있다.
-    println!("{:?}", my_tuple); // tuple은 다 똑같은 타입일 필요가 없다.
-    // tuple내에 요소의 타입을 알고 싶으로 뒤에 아무글자의 메소드를 호출하면 된다.
-    // my_tuple.wefuhwaeogv();
-    let random_tuple = ("Here is a name", 8, vec!['a'], 'b', [8, 9, 10], 7.7);
-    println!(
-        "Inside the tuple is: First item: {:?}
-Seconde item: {}
-Third item: {:?}
-Fourth item: {:?}
-Fifth item: {:?}
-Sixth item: {}", // 정수, 실수는 디버그 프린트를 쓸 필요가 없다.
-        random_tuple.0, // 튜플이 Vec, Array와 다른 점은 요소를 가져올 때 프로퍼티를 이용해서 가져온다.
-        random_tuple.1,
-        random_tuple.2,
-        random_tuple.3,
-        random_tuple.4,
-        random_tuple.5,
-    );
+fn main() {
+    let my_number = 5;
+    let my_second_number = 10;
 
-    // Vec에 두 개의 자료형을 넣게하고 싶으면 tuple을 쓰면 된다
-    // Vec<(String, i32)>
-    let _my_vec = vec![("Hey", 9), ("Hello there", 321241)];
+    // 중괄호를 쓰면 에러가 안나지만 컴파일러가 필요없다고 경고한다.
+    if /*(*/my_number == 5/*)*/ && my_second_number == 10{
+        println!("They both match");
+    
+    // 다른 언어와 마찬가지로 &&: and, ||: or을 지원한다.
+    } else if my_number == 6 {
+        println!("It's six");
 
-    // Destructuring
-    let str_tuple = ("one", "two", "three");
-    let (a, b, c) = str_tuple; // 러스트에도 비구조화 할당을 할 수 있다.
-    let (d, _, _) = str_tuple; // _는 할당을 안 받을 경우 쓴다. 또한 요소 개수만큼 변수를 개수를 맞춰 줘야한다.
-    println!("{}, {}, {}, {}", a, b, c, d);
+    } else { // 7과 6이 아니니 It's a different number이 출력된다.
+        println!("It's a different number");
+    }
+
+    // match
+    let my_number = 5;
+
+    // 다른 언어에서는 비슷한 switch가 있는데 match가 더 좋음
+    // rust가 expression-based language인 만큼 match앞에 변수선언이 가능함
+    let second_number = match my_number {
+        0 => 23,
+        1 => 56,
+
+        // 모든 가능성을 다 적어주어야 안전하기에 _를 쓴다.
+        _ => 17 // _는 i don't care || anything else 라는 뜻
+    };
+    println!("The second number is: {}", second_number);
 }
