@@ -1,53 +1,35 @@
-// destructuring, 비구조화
-// destructuring은 튜플, 배열로도 할 수 있다.
+// Dereference and the dot operator
 
-struct Person {
-    name: String,
-    real_name: String,
-    height: u8,
-    happiness: bool
+struct Item {
+    number: u8
 }
 
-#[derive(Debug)]
-struct Person2 {
-    name: String,
-    height: u8
-}
-
-impl Person2 { // 이런 식으로 destructuring을 활용하여 다른 정보만 가지는 구조체를 만들 수 있음
-    fn from_person(input: Person) -> Self {
-        // 뒤에 ..을 쓰면 나머지는 필요가 없다는 뜻이 됨
-        let Person {name, height, ..} = input;
-
-        Self { name, height }
-
+impl Item {
+    fn compare_number(&self, other_number: u8) {
+        println!("Are they equal? {}", self.number == other_number);
     }
 }
 
 fn main() {
-    let papa_doc = Person {
-        name: "Papa Doc".to_string(),
-        real_name: "Clarence".to_string(),
-        height: 170,
-        happiness: false
+    let my_number = 10;
+    let _reference = &my_number;
+
+    // i32와 &i32는 타입이 달라 에러가 남
+    // println!("Are they the same? {}", my_number == _reference);
+
+    let item = Item {
+        number: 10
     };
-    /*
-    println!("They call him {}, but his real name is {}. He is {} cm tall and is he happy? {}",
-        papa_doc.name,
-        papa_doc.real_name,
-        papa_doc.height,
-        papa_doc.happiness
-    );
-    */
 
-    // 'let 구조체이름 {키명1, 키명2, 키명3...} = 구조체 변수명' 으로 비구조화 할 수 있다.
-    // {키명1: 다른이름1, 키명2: 다른이름2, 키명3: 다른이름3} 으로 변수 이름을 설정할 수 있다.
-    let Person { name: a, real_name: b, height: c, happiness: d } = &papa_doc;
-    println!("They call him {}, but his real name is {}. He is {} cm tall and is he happy? {}", a, b, c, d);
+    let _reference = &item.number; // &u8
+    // 얘 역시도 에러가 남
+    // println!("{}", _reference == 10);
 
-    println!("-------------------------");
 
-    let person2 = Person2::from_person(papa_doc);
-    println!("Person2 type is: {:?}", person2);
+    let reference_item = &item; // &item
+    let other_reference_item = &reference_item; // &&item
 
+    // .연산자를 쓰면 러스트가 알아서 dereferencing 함 (*을 쓸 필여가 없음)
+    reference_item.compare_number(10);
+    other_reference_item.compare_number(10);
 }
