@@ -1,68 +1,53 @@
-// impl blocks (implement blocks)
+// destructuring, 비구조화
+// destructuring은 튜플, 배열로도 할 수 있다.
 
-#[derive(Debug)]
-struct Animal {
-    age: u8,
-    animal_type: AnimalType
+struct Person {
+    name: String,
+    real_name: String,
+    height: u8,
+    happiness: bool
 }
 
 #[derive(Debug)]
-enum AnimalType {
-    Cat(String),
-    Dog(String)
+struct Person2 {
+    name: String,
+    height: u8
 }
 
-impl AnimalType {
-    fn print_name(&self) { // enum에도 impl을 만들 수 있다.
-        match self {
-            AnimalType::Cat(name) => println!("Animal type is cat and name is {}", name),
-            AnimalType::Dog(name) => println!("Animal type is dog and name is {}", name)
-        }
+impl Person2 { // 이런 식으로 destructuring을 활용하여 다른 정보만 가지는 구조체를 만들 수 있음
+    fn from_person(input: Person) -> Self {
+        // 뒤에 ..을 쓰면 나머지는 필요가 없다는 뜻이 됨
+        let Person {name, height, ..} = input;
+
+        Self { name, height }
+
     }
-}
-
-impl Animal { // 같은 이름의 impl을 더 만들어도 된다.
-    // fn new_old_cat() -> Self {
-    //     Self { age: 15, animal_type: AnimalType::Cat }
-    // }
-}
-
-impl Animal {
-    fn new(age:u8, animal_type: AnimalType) -> Self {
-        Self { age, animal_type }
-    }
-
-    // fn new_cat(age:u8) -> Self { // function signature
-    //     Self {
-    //         age,
-    //         animal_type: AnimalType::Cat
-    //     }
-    // }
-
-    // fn new_dog(age:u8) -> Self { // function signature
-    //     Self {
-    //         age,
-    //         animal_type: AnimalType::Dog
-    //     }
-    // }
-
-    // fn print(&self) {
-    //     println!("I am a: {:?}", self);
-    // }
-
-    // fn change_to_dog(&mut self){
-    //     self.animal_type = AnimalType::Dog;
-    //     println!("Changed to dog! Now I am: {:?}", self);
-    // }
-
-    // fn change_to_cat(&mut self){
-    //     self.animal_type = AnimalType::Cat;
-    //     println!("Changed to cat! Now I am: {:?}", self);
-    // }
 }
 
 fn main() {
-    use AnimalType::*;
-    let my_cat = Animal::new(10, Cat("naaaame".to_string()));
-    my_cat.animal_type.print_name();
+    let papa_doc = Person {
+        name: "Papa Doc".to_string(),
+        real_name: "Clarence".to_string(),
+        height: 170,
+        happiness: false
+    };
+    /*
+    println!("They call him {}, but his real name is {}. He is {} cm tall and is he happy? {}",
+        papa_doc.name,
+        papa_doc.real_name,
+        papa_doc.height,
+        papa_doc.happiness
+    );
+    */
+
+    // 'let 구조체이름 {키명1, 키명2, 키명3...} = 구조체 변수명' 으로 비구조화 할 수 있다.
+    // {키명1: 다른이름1, 키명2: 다른이름2, 키명3: 다른이름3} 으로 변수 이름을 설정할 수 있다.
+    let Person { name: a, real_name: b, height: c, happiness: d } = &papa_doc;
+    println!("They call him {}, but his real name is {}. He is {} cm tall and is he happy? {}", a, b, c, d);
+
+    println!("-------------------------");
+
+    let person2 = Person2::from_person(papa_doc);
+    println!("Person2 type is: {:?}", person2);
+
 }
