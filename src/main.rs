@@ -1,49 +1,37 @@
-// Option은 generic이 존재하면 Some, 그렇지 않다면 None을 나타낸다.
+use std::num::ParseIntError;
 
-// Result
-
-// enum Result<T, E> {
-//     Ok(T), // 잘 된다면 T
-//     Err(E) // 안되면 E를 이용해서 에러메세지를 출력하거나 등등을 할 수 있다.
-// }
-
-use std::{slice::ChunksExact, path::Ancestors};
-
-// 형식상 이렇게 써도 상관없다.
-fn _check_error() -> Result<(), ()> {
-     Ok(())
-}
-
-// 얘도 형식상 Result를 잘 쓰는거다.
-fn _another_check_error(input: i32) -> Result<(), ()> {
-    if input % 2 == 0 { // 에러를 정할 수 있다.
-        Ok(())
-    } else {
-        Err(())
+// 5가 나오면 Ok, 아니면 Err가 나오는& 함수
+fn check_if_five(number: i32) -> Result<i32, String> {
+    match number {
+        5 => Ok(number),
+        _ => Err("Error!! It's not five".to_string())
     }
 }
 
-// Option에는 .is_some(), .is_none() 메서드가 있듯이
-// Result에도 .is_ok(), .is_err() 메서드가 있다.
+// Result<T, E>타입을 반환할 땐 Ok(T), Err(E)를 반환해야한다.
+fn parse_number(num: &str) -> Result<i32, ParseIntError> {
+    // 숫자만 있는 문자열이 들어가야 에러가 안 남
+    num.parse() // parse는 자기만의 에러를 가지고 있음: ParseIntError
+}
 
 fn main() {
-    let _var = _check_error();
-    let _var = _another_check_error(5);
-    if _var.is_ok() {
-        println!("It's okay, guys!");
-    } else {
-        println!("It's an error, guys!");
-    }
-    match _another_check_error(10) {
-        // Ok(), Err() 안에 유닛 타입이 있는데
-        // 필요 없으니 _로 처리한다.
-        Ok(_) => println!("Okay guys"),
-        Err(_) => println!("It's an error")
-    }
-    // Option과 똑같이 .unwrap()을 쓸 수 있다.
-    // Err가 나온다면 panic이 뜬다.
-    _another_check_error(10).unwrap();
+    // Vec<Result<i32, String>>
+    let mut result_vec = Vec::new();
 
-    // Option: None.unwrap() -> panic
-    // Result: Err.unwrap() -> panic
+    for number in 2..=7 {
+        result_vec.push(check_if_five(number));
+    }
+
+    println!("{:?}", result_vec);
+
+    // parse - 숫자로 만들어줌
+
+    let mut my_vec = vec![];
+    my_vec.push(parse_number("8"));
+    my_vec.push(parse_number("aweofi")); // 에러가 남
+    my_vec.push(parse_number("10"));
+
+    for num in my_vec{
+        println!("{:?}", num);
+    }
 }
