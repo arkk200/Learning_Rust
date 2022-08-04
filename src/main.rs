@@ -1,42 +1,28 @@
-use std::collections::BinaryHeap;
+use std::collections::VecDeque;
 
-fn show_remainder(input: &BinaryHeap<i32>) -> Vec<i32> {
-    let mut remainder_vec = vec![];
-    for num in input {
-        remainder_vec.push(*num);
-    }
-    remainder_vec
-}
+// VecDeque
+// Deque(double - ended queue)는
+// 양방향으로 값을 집어넣을 수 있는 queue를 의미한다.
 
 fn main() {
-    let many_nums = vec![0, 5, 10, 15, 20, 25, 30];
+    // Vec도 .remove(0)을 써서 앞에 값을 빼올 수 있다.
+    let mut _my_vec = vec![8, 9, 10];
+    println!("{}, {:?}", _my_vec.remove(0), _my_vec);
+    // remove는 값을 제거하면 뒤에서부터 값들을 한칸씩 앞으로 당긴다.
+    // 만약 배열 길이가 길어진다면 성능이 떨어진다는 단점이 있기에 이럴 땐 Deque를 사용한다.
+    let mut _very_larget_vec = vec![0; 600_000];
 
-    // BinaryHeap의 특징은, 순서는 랜덤이지만
-    // 값들 중 가장 큰 값은 무조건 앞에 배치되어 있음
-    let mut my_heap = BinaryHeap::new();
-
-    for num in many_nums {
-        my_heap.push(num);
+    /*
+    for _ in 0..600_000 { // 60만 번 값을 제거하면서 1800억번정도 값을 복사하고 앞 인덱스에 붙여넣음
+        _very_larget_vec.remove(0);
     }
+    */
 
-    // my_heap에 값이 있으면 반복함
-    while let Some(num) = my_heap.pop() { // Heap이니깐 앞에서부터 pop함
-        println!("Popped off {}, Remaining numbers are: {:?}", num, show_remainder(&my_heap));
-    }
-
-    
-    let mut jobs = BinaryHeap::new();
-
-    // ( 중요도, 내용 )
-    // 튜플이 push가 될 경우 튜플 안에서
-    // 앞에 있는 요소를 기준으로 위에서 말한 규칙을 정함
-    jobs.push((100, "Write back to email from the CEO"));
-    jobs.push((80, "Finish the report today"));
-    jobs.push((5, "Watch some YouTube"));
-    jobs.push((70, "Tell your team members thanks for always working hard"));
-    jobs.push((30, "Plan who to hire next for the team"));
-
-    while let Some((_, content)) = jobs.pop() {
-        println!("You need to: {}", content);
+    // VecDeque
+    let mut _very_larget_vecdeque = VecDeque::from(vec![0; 600_000]);
+    for _ in 0..600_000 { // 60만 번 정도 pop()하기만 함
+        // push_front(), pop_front()로 앞에서부터 값을 넣거나 제거하고
+        // push_back(), pop_back()으로 뒤에서부터 값을 넣거나 제거함
+        _very_larget_vecdeque.pop_front();
     }
 }
