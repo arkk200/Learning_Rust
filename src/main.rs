@@ -1,55 +1,61 @@
+use std::collections::{HashMap, BTreeMap};
+
+// HashMap and BTreeMap
+
+// HashMap은 파이썬의 딕셔너리, JS의 객체와 비슷하다.
+// key가 있고 value가 있다.
+
+// BTreeMap도 HashMap처럼 key와 value가 있지만
+// 다른 점은 순서를 가지고 있다.
+
+struct City {
+    name: String,
+
+    // 각각 year(key), population(value) 이다.
+    population: HashMap<u32, u32>
+}
+
+struct AnotherCity {
+    name: String,
+
+    // 각각 year(key), population(value) 이다.
+    population: BTreeMap<u32, u32>
+}
+
 fn main() {
-    let my_vec = vec![2, 3, 4];
-    // .get은 배열에서 해당 인덱스에 값이 있으면 Some(값),
-    // 없으면 None을 반환함
-    let _get_one = my_vec.get(0);
-    let _get_two = my_vec.get(20);
-    println!("{:?}, {:?}", _get_one, _get_two);
+    let mut tallinn = City {
+        name: "Tallinn".to_string(),
+        population: HashMap::new()
+    };
 
-    // 이를 활용해서 안전하게 원하는 값만 출력할 수 있다.
-    for index in 0..10 {
-        match my_vec.get(index) {
-            Some(num) => println!("The number is: {}", num),
-            None => {}
-        }
+    tallinn.population.insert(1372, 3_250);
+    tallinn.population.insert(1851, 24_000);
+    tallinn.population.insert(2020, 123);
+    // 이미 HashMap에 같은 이름의 키가 있을 경우 덮어쓴다.
+    tallinn.population.insert(2020, 437_619);
 
-        // if let을 이용하면
-        /*
-        let a = Some(0i32);
-        match a {
-            Some(3) => println!("three"),
-            _ => (),
-        } 를
-        if let Some(3) = a {
-            println!("three");
-        } 로 줄일 수 있다. (비교를 할 때 = 을 하나만 씀)
-        출처: https://rinthel.github.io/rust-lang-book-ko/ch06-03-if-let.html
-        if let은 서로 패턴이 대응된다면 패턴식을 수행한 후 분기로 접어든다.
-        */
-        if let Some(num) = my_vec.get(index) {
-            println!("The number is: {}", num);
-        }
+    // 실행할 때마다 순서가 섞여서 출력됨, HashMap은 성능 때문에 순서가 없음
+    for (year, population) in tallinn.population {
+        println!("In the year {} the population was {}", year, population);
     }
-    
-    // if let과 마찬가지로 while let도 존재한다, while let도 마찬가지이다.
-    
-    let weather_vec = vec![
-        vec!["Berlin", "cloudy", "5", "-7", "78"],
-        vec!["Athens", "sunny", "not humid", "20", "10", "50"]
-    ];
 
-    println!("");
+    for _i in 0..3 {println!("");}
 
-    for mut city in weather_vec {
-        println!("For the city of: {}", city[0]);
-        // vec!["Berlin", "cloudy", ...]에서 하나씩 pop()을 하고
-        // 안에 있던 문자열을 반환함 (pop()은 뒤에서부터 하나씩 요소를 제거함)
-        while let Some(information) = city.pop() {
-            // information.parse를 할 때 타입이 i32인게 나오면
-            // Ok(_)의 패턴식과 같아지고 패턴식을 실행함
-            if let Ok(number) = information.parse::<i32>() { // turbofish ::<>
-                println!("The number is: {}", number);
-            }
-        }
+
+    // BTreeMap
+    let mut tallinn = AnotherCity {
+        name: "Tallinn".to_string(),
+        population: BTreeMap::new()
+    };
+
+    tallinn.population.insert(1372, 3_250);
+    tallinn.population.insert(1851, 24_000);
+    tallinn.population.insert(2020, 123);
+    // BTreeMap도 마찬가지로 같은 이름의 키가 있을 경우 덮어쓴다.
+    tallinn.population.insert(2020, 437_619);
+
+    // key값이 오름차순으로 정렬되어 있는 것을 확인할 수 있다.
+    for (year, population) in tallinn.population {
+        println!("In the year {} the population was {}", year, population);
     }
 }
