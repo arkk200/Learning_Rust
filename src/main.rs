@@ -1,42 +1,31 @@
-use std::fmt::Display;
-use std::cmp::PartialOrd;
+// Option
+// Result
+// Ocaml이라는 언어에서 Option과 Result의 개념을 갖고 옴
 
-/* 
-fn _compare_and_print<T: Display>(statement: T, num_1: T, num_2: T) {
-    println!(
-        "{}! is {} greater than {}? {}",
-        statement,
-        num_1,
-        num_2,
-        num_1 > num_2 // 숫자 외의 타입은 비교가 안되니 에러가 뜬다.
-    );
-}
-*/
-
-fn _fixed_compare_and_print<T: Display, U: Display + PartialOrd>(statement: T, num_1: U, num_2: U) {
-    println!(
-        "{}! is {} greater than {}? {}",
-        statement,
-        num_1,
-        num_2,
-        num_1 > num_2 // 숫자 외의 타입은 비교가 안되니 에러가 뜬다.
-    );
+// 다른 언어에선 포인터가 null을 가르키면 심각한 문제를 일으키는데
+// 러스트에선 포인터가 무엇을 가르키는지 모를 땐
+// Option을 선택하게 하면 된다.
+// 가르키는게 없으면 None, 있으면 generic T를 가지고
+// Some을 실행시킨다.
+enum _Option<T>{
+    None,
+    Some(T),
 }
 
-fn _simple_fixed_compare_and_print<T, U>(statement: T, num_1: U, num_2: U)
-where // trait이 너무 길어지면 where을 써서 보기 쉽게 만들 수 있다.
-    T: Display,
-    U: Display + PartialOrd
-{
-    println!(
-        "{}! is {} greater than {}? {}",
-        statement,
-        num_1,
-        num_2,
-        num_1 > num_2 // 숫자 외의 타입은 비교가 안되니 에러가 뜬다.
-    );
+// Option이 쓰이는 예제
+fn take_fifth(value: Vec<i32>) -> Option<i32> {
+    if value.len() < 5 {
+        None
+    } else {
+        // Option<i32>와 i32는 타입이 다르므로
+        // Some으로 감싸줘야함
+        Some(value[4])
+    }
 }
+// 위와 같은 경우, Option을 쓰면 안전해진다.
 
 fn main() {
-    _simple_fixed_compare_and_print("Listen up", 19, 29);
+    let new_vec = vec![1, 2, 4, 7, 8, 10, 10];
+    let index = take_fifth(new_vec);
+    println!("{:?}", index);
 }
