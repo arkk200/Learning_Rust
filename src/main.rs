@@ -1,61 +1,41 @@
-use std::collections::{HashMap, BTreeMap};
-
-// HashMap and BTreeMap
-
-// HashMap은 파이썬의 딕셔너리, JS의 객체와 비슷하다.
-// key가 있고 value가 있다.
-
-// BTreeMap도 HashMap처럼 key와 value가 있지만
-// 다른 점은 순서를 가지고 있다.
-
-struct City {
-    name: String,
-
-    // 각각 year(key), population(value) 이다.
-    population: HashMap<u32, u32>
-}
-
-struct AnotherCity {
-    name: String,
-
-    // 각각 year(key), population(value) 이다.
-    population: BTreeMap<u32, u32>
-}
+use std::collections::HashMap;
 
 fn main() {
-    let mut tallinn = City {
-        name: "Tallinn".to_string(),
-        population: HashMap::new()
-    };
+    let canadian_cities = vec!["Calgary", "Vancouver", "Gimli"];
+    let german_cities = vec!["Karlsruhe", "Bad Doberan", "Bielefeld"];
 
-    tallinn.population.insert(1372, 3_250);
-    tallinn.population.insert(1851, 24_000);
-    tallinn.population.insert(2020, 123);
-    // 이미 HashMap에 같은 이름의 키가 있을 경우 덮어쓴다.
-    tallinn.population.insert(2020, 437_619);
+    let mut city_hashmap = HashMap::new();
 
-    // 실행할 때마다 순서가 섞여서 출력됨, HashMap은 성능 때문에 순서가 없음
-    for (year, population) in tallinn.population {
-        println!("In the year {} the population was {}", year, population);
+    for city in canadian_cities {
+        // HashMap은 key, value 둘 다 있어야 한다.
+        city_hashmap.insert(city, "Canada");
     }
 
-    for _i in 0..3 {println!("");}
+    for city in german_cities {
+        city_hashmap.insert(city, "Germany");
+    }
 
+    println!("{:?}", city_hashmap["Bielefeld"]);
 
-    // BTreeMap
-    let mut tallinn = AnotherCity {
-        name: "Tallinn".to_string(),
-        population: BTreeMap::new()
-    };
+    // 좀 더 안전하게 하려면 HashMap 역시 .get()을 쓰면된다.
+    println!("{:?}", city_hashmap.get("Bielefeld"));
+    println!("{:?}", city_hashmap.get("Doesn't include this"));
 
-    tallinn.population.insert(1372, 3_250);
-    tallinn.population.insert(1851, 24_000);
-    tallinn.population.insert(2020, 123);
-    // BTreeMap도 마찬가지로 같은 이름의 키가 있을 경우 덮어쓴다.
-    tallinn.population.insert(2020, 437_619);
+    
+    let mut book_hashmap = HashMap::new();
 
-    // key값이 오름차순으로 정렬되어 있는 것을 확인할 수 있다.
-    for (year, population) in tallinn.population {
-        println!("In the year {} the population was {}", year, population);
+    book_hashmap.insert(1, "L'Allemagne Noderne");
+    book_hashmap.insert(1, "Le Petit Prince");
+    book_hashmap.insert(1, "섀도우 오브 유어 스마일");
+    book_hashmap.insert(1, "Eye of the World");
+    // 최종적으로 "Eye of the World"가 덮어 씀
+
+    // hashmap에서 키를 가져올 땐 값을 빌려주어야 한다.
+    println!("{:?}", book_hashmap.get(&1));
+
+    if let Some(book_name) = book_hashmap.get(&1) {
+        println!("Already got a book: \"{}\"", book_name);
+    } else {
+        book_hashmap.insert(1, "Le Petit Price");
     }
 }
