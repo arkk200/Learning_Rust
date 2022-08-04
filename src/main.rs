@@ -25,7 +25,35 @@ fn take_fifth(value: Vec<i32>) -> Option<i32> {
 // 위와 같은 경우, Option을 쓰면 안전해진다.
 
 fn main() {
-    let new_vec = vec![1, 2, 4, 7, 8, 10, 10];
-    let index = take_fifth(new_vec);
+    let new_vec = vec![1, 2, 0, 2, 2, 1, 0];
+    let index = take_fifth(new_vec); // Option<i32>: Some(2)
+    let another_new_vec = vec![1, 0];
+    let another_index = take_fifth(another_new_vec); // None
     println!("{:?}", index);
+
+    // .unwrap() - take out what is inside
+
+    // Some()을 unwrap하면 안에 있는 값이 나옴
+    // 그러나 None을 unwrap하면 panick이 뜸
+    println!("{}", index.unwrap()); // 2
+    // println!("{}", another_index.unwrap()); // panick 에러
+    
+    // 위의 panick 에러를 예방하기 위해 match를 씀
+    match another_index {
+
+        // Some() 이라면
+        Some(number) => println!("I got a number: {}", number),
+
+        // None 이라면
+        None => println!("There was nothing inside")
+    }
+
+    // 다른 예방 방법
+    if index.is_some() {
+        // some이라면 실행되므로 unrwap해도 에러가 안남 
+        println!("I got a number: {}", index.unwrap());
+    }
+
+    // 에러가 생겼을 때 expect를 이용하여 error 메세지를 만들 수 있다.
+    another_index.expect("Needed at least five items");
 }
