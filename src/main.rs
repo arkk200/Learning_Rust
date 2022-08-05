@@ -1,26 +1,36 @@
-// Question mark operator
+// Rust formatting
 
-use std::num::ParseIntError;
-
-fn parse_str(input: &str) -> Result<i32, ParseIntError> {
-    // ?는 match를 해주는데 에러가 있으면 error을 반환한다.
-    // 물음표 연산자를 쓸 때 무조건 반환하는게 Result여야한다.
-    // 에러가 있을 경우 에러를 반환하는데 그에 맞는 타입을 써줘야 하기 때문이다.
-    let parsed_number = input.parse::<i32>()?; // return error
-    println!("It worked! {}", parsed_number);
-
-    // ? 는 에러가 생길 수 있는 위치에 더 써줄 수도 있다.
-    let parsed_number = input.parse::<u16>()?.to_string().parse::<u32>()?.to_string().parse::<i32>()?;
-
-    Ok(parsed_number) // Result를 반환하므로 이런식으로 써야한다.
+#[derive(Debug)]
+struct Book {
+    title: String,
+    year: u16
 }
 
-fn main() { // 9.0은 안됨
-    for i in vec!["Seven", "8", "9.0", "nice", "6060"] {
-        let parsed = parse_str(i);
-        println!("{:?}", parsed);
-        // if let Ok(num) = parsed {
-        //     println!("{}", num); // Result를 반환받으므로 Debug print를 씀
-        // }
-    }
+fn main() {
+    let my_book = Book {
+        title: "Some title".to_string(),
+        year: 1919
+    };
+    let book_2 = Book {
+        title: "Book 2".to_string(),
+        year: 2020
+    };
+    let t = 10;
+
+    // Debug print format은 {변수명:?} 이런식으로 쓰면 된다
+    // Python f"{string}" 처럼 쓰면 됨
+    println!("Got books:{my_book:?}, {book_2:?}");
+    
+
+    // 아직은 아래 같이 프로퍼티를 쓰는건 지원 안함
+    // 변수 그대로만 쓸 수 있음. 필요하면 변수를 하나 더 만들어야함
+    // println!("My book name: {my_book.title}");
+
+    // 정렬도 지원함
+    println!("{t:ㅁ^15}");
+
+
+    let width = 10;
+    // 변수명$을 써서 변수로 정렬 길이를 정하는 것도 가능하다.
+    println!("{t:ㅇ>width$?}");
 }
