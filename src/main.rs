@@ -1,36 +1,31 @@
-// Rust formatting
+use std::fmt::Debug;
 
-#[derive(Debug)]
-struct Book {
-    title: String,
-    year: u16
+// traits
+// power superpower
+
+struct  _ThingToAdd {
+    first_thing: u32,
+    seconde_thing: f32
+}
+
+fn _print_as_debug<T>(input: T)
+where
+    T: Debug // 이러한 Debug가 trait이다
+{
+    println!("{input:?}");
 }
 
 fn main() {
-    let my_book = Book {
-        title: "Some title".to_string(),
-        year: 1919
+    let my_thing = _ThingToAdd {
+        first_thing: 32,
+        seconde_thing: 8.8
     };
-    let book_2 = Book {
-        title: "Book 2".to_string(),
-        year: 2020
+
+    let second_thing = _ThingToAdd {
+        first_thing: 32,
+        seconde_thing: 8.8
     };
-    let t = 10;
 
-    // Debug print format은 {변수명:?} 이런식으로 쓰면 된다
-    // Python f"{string}" 처럼 쓰면 됨
-    println!("Got books:{my_book:?}, {book_2:?}");
-    
-
-    // 아직은 아래 같이 프로퍼티를 쓰는건 지원 안함
-    // 변수 그대로만 쓸 수 있음. 필요하면 변수를 하나 더 만들어야함
-    // println!("My book name: {my_book.title}");
-
-    // 정렬도 지원함
-    println!("{t:ㅁ^15}");
-
-
-    let width = 10;
-    // 변수명$을 써서 변수로 정렬 길이를 정하는 것도 가능하다.
-    println!("{t:ㅇ>width$?}");
+    // 이런식으로 더하려고 할 때도 trait을 쓴다.
+    // let sum = my_thing + second_thingl
 }
