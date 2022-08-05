@@ -1,31 +1,32 @@
-use std::fmt::Debug;
-
-// traits
-// power superpower
-
-struct  _ThingToAdd {
-    first_thing: u32,
-    seconde_thing: f32
+struct Animal {
+    name: String
 }
 
-fn _print_as_debug<T>(input: T)
-where
-    T: Debug // 이러한 Debug가 trait이다
-{
-    println!("{input:?}");
+// trait도 struct처럼 만들면 된다.
+trait Canine { // dog-like
+    // 형식이 똑같으면 impl에서 덮어쓸 수 있음
+    fn bark(&self) {
+        println!("I was changed by impl fn");
+    }
+    fn run(&self) { // 여기서 바로 default implementation도 할 수 있다.
+        println!("I am running!");
+    }
+}
+
+// impl에서 trait에 있는 함수를 struct에게 줄 땐
+// 'impl trait명 for 구조체명' 형식으로 쓰면 된다.
+impl Canine for Animal {
+    // trait Canine에서 적었던 함수를 imple에서 더 자세히 적음
+    fn bark(&self) {
+        println!("Woof woof!");
+    }
 }
 
 fn main() {
-    let my_thing = _ThingToAdd {
-        first_thing: 32,
-        seconde_thing: 8.8
+    let my_animal = Animal {
+        name: "Mr. Mantle".to_string()
     };
 
-    let second_thing = _ThingToAdd {
-        first_thing: 32,
-        seconde_thing: 8.8
-    };
-
-    // 이런식으로 더하려고 할 때도 trait을 쓴다.
-    // let sum = my_thing + second_thingl
+    my_animal.bark();
+    my_animal.run();
 }
