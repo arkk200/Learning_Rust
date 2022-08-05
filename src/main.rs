@@ -1,48 +1,77 @@
+// trait bounds는 generic 함수에 특정 trait을 impl한 타입만 들어가게 해주는 것이다.
+use std::fmt::Debug;
+
+#[derive(Debug)]
 struct Monster {
     health: i32
 }
-struct Wizard {}
-struct Ranger {}
 
-trait FightClose {
-    // trait에 default implementation이 있으므로
-    fn attack_with_sword(&self, opponent: &mut Monster){
-        opponent.health -= 10;
-        println!("You strike with your sowrd! Your opponent's health is now {}", opponent.health);
-    }
-    fn attack_with_hand(&self, opponent: &mut Monster){
-        opponent.health -= 2;
-        println!("You strike with your fist! Your opponent's health is now {}", opponent.health);
-    }
+#[derive(Debug)]
+struct Wizard {
+    health: i32
 }
 
-// 여기에 아무것도 안 써줘도 된다.
-impl FightClose for Wizard {}
+#[derive(Debug)]
+struct Ranger {
+    health: i32
+}
+
+trait Magic {}
+trait FightClose {}
+trait FightFromDistance {}
+
+impl Magic for Wizard {}
 impl FightClose for Ranger {}
-
-trait FightFromDistance {
-    fn attack_with_bow(&self, opponent: &mut Monster, distance: u32){
-        if distance < 10 {
-            opponent.health -= 10;
-            println!("You strike with your bo! Your opponent's health is now {}", opponent.health);
-        }
-    }
-    fn attack_with_rock(&self, opponent: &mut Monster, distance: u32){
-        if distance < 3 {
-            opponent.health -= 4;
-            println!("You strike with your sowrd! Your opponent's health is now {}", opponent.health);
-        }
-    }
-}
-impl FightFromDistance for Wizard {}
+impl FightClose for Wizard {}
 impl FightFromDistance for Ranger {}
 
+
+// trait bounds
+fn attack_with_bow<T>(character: &T, opponent: &mut Monster, distance: u32)
+where T: FightFromDistance + Debug
+{
+    if distance < 10 {
+        opponent.health -= 10;
+        println!(
+            "You attack with your bow. Your opponent now has {} health left. You are now at: {character:?}",
+            opponent.health
+        );
+    }
+}
+
+fn attack_with_sword<T>(character: &T, opponent: &mut Monster)
+where T: FightClose + Debug
+{
+    opponent.health -= 10;
+    println!(
+        "You attack with your sword. Your opponent now has {} health left. You are now at: {character:?}",
+        opponent.health
+    );
+}
+
+fn fireball<T>(character: &T, opponent: &mut Monster, distance: u32)
+where T: Magic + Debug
+{
+    if distance < 15 {
+        opponent.health -= 20;
+        println!(
+            "You attack with your bow. Your opponent now has {} health left. You are now at: {character:?}",
+            opponent.health
+        );
+    }
+}
+
 fn main() {
-    let radagast = Wizard {};
-    let aragorn = Ranger {};
+    let radagast = Wizard {
+        health: 60
+    };
+    let aragorn = Ranger {
+        health: 80
+    };
 
     let mut uruk_hai = Monster { health: 40 };
 
-    radagast.attack_with_sword(&mut uruk_hai);
-    aragorn.attack_with_bow(&mut uruk_hai, 7);
+    attack_with_sword(&radagast, &mut uruk_hai);
+    attack_with_bow(&aragorn, &mut uruk_hai, 7);
+    fireball(&radagast, &mut uruk_hai, 12);
 }
